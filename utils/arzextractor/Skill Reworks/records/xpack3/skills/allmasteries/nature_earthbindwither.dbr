@@ -1,0 +1,4 @@
+ActorName,DefensiveMastery_ArmorTraining,
+Class,Skill_AttackBuff,
+templateName,Database\templates\skill_attackbuff.tpl,
+buffSkillName,Records\xpack3\skills\allmasteries\wither.dbr,

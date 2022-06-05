@@ -1,0 +1,8 @@
+Class,FxPak,
+disturbanceRadius,0.000000,
+cameraShakeAmplitude,0.500000,
+meshEffectNames,Records\XPack2\Effects\Meshes\Earthbind_trapped_mesh.dbr,
+particleEffectNames,records\xpack2\effects\skilleffects\runeskillfx\earthbindring_hit3_fx.dbr,
+cameraShakeDuration,0.000000,
+templateName,Database\templates\fxpak.tpl,
+activateSound,Records\Sounds\SoundPak\Spells\Nature\BriarWardCastPak.dbr,
