@@ -85,9 +85,14 @@ def get_affix_table_type(file_prefix):
         "spear",
         "staff",
         "sword",
+        # Ranged one-hand; throwing weapons
+        "roh"
     ]:
         if file_prefix.startswith(prefix):
             return prefix
+
+    # Fallback to just the file prefix:
+    return file_prefix
 
 
 def is_duplicate_affix(affixes, affix):

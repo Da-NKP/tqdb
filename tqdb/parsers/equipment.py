@@ -3,7 +3,6 @@ All wearable/usable equipment parsers.
 
 """
 import logging
-import math
 import os
 
 import numexpr
@@ -267,6 +266,9 @@ class ItemEquipmentParser(TQDBParser):
         cost_prefix = dbr["Class"].split("_")[1]
         cost_prefix = cost_prefix[:1].lower() + cost_prefix[1:]
 
+        if cost_prefix == 'rangedOneHand':
+            cost_prefix = 'bow'
+
         # Read cost file
         cost_properties = DBRParser.read(dbr.get("itemCostName", self.REQUIREMENT_FALLBACK))
 
@@ -285,7 +287,7 @@ class ItemEquipmentParser(TQDBParser):
                 totalAttCount = len(result["properties"])  # noqa
 
                 # Eval the equation:
-                result[req] = math.ceil(numexpr.evaluate(equation).item())
+                result[req] = round(numexpr.evaluate(equation).item())
 
     def should_parse_requirements(self, dbr, result):
         """
@@ -363,11 +365,16 @@ class ItemRelicParser(TQDBParser):
         max_pieces = TQDBParser.highest_tier(result["properties"], result["properties"].keys())
 
         # Initialize a list of tiers
-        properties = [{} for i in range(max_pieces)]
+        properties = [{} for _ in range(max_pieces)]
 
         # Setup properties as list to correspond to adding pieces of a relic:
         for key, values in result["properties"].items():
-            if not isinstance(values, list):
+            if key.startswith('racialBonus') and len(values) == max_pieces:
+                # Since racial bonuses are 2D lists, put the whole list on each tier:
+                for i in range(len(values)):
+                    properties[i][key] = values[i]
+                continue
+            elif not isinstance(values, list) or key.startswith('racialBonus'):
                 # This property is just repeated for all tiers:
                 for i in range(max_pieces):
                     properties[i][key] = values
